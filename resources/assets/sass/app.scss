@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@import "../../../public/libs/bootstrap/dist/css/bootstrap.min.css";
+
+*{
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+html , body{
+  width: 100%;
+  height:100%;
+  margin:0px;
+}
+
+body{
+  &.cover{
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),  url('/img/background.jpg');
+    background-size: cover;
+  }
+}
+
+.welcome{
+  margin-top: 10%;
+
+  .title, .description{
+    color:white;
+    text-align:center;
+  }
+
+  .title{
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  .description{
+    font-size: 24px;
+  }
+
+  .actions{
+    text-align:center;
+    width: 250px;
+    margin: 50px auto;
+
+    .btn{
+      width: 100px;
+      margin-right: 10px;
+    }
+  }
+}
+
+@import "auth";
+@import "admin";
+@import "jttimepicker";

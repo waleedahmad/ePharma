@@ -1,0 +1,23 @@
+{
+  "name": "epharma",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Waleed Ahmad <waleedgplus@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/waleedahmad/ePharma",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jt.timepicker": "^1.11.11",
+    "jquery": "^3.2.1"
+  }
+}

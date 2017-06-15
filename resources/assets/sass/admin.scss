@@ -1,0 +1,46 @@
+.admin{
+  .page-header{
+    margin-top: 0px;
+    padding-bottom: 20px;
+
+    h3{
+      margin: 0px;
+    }
+
+    h3,button{
+      display: inline-block;
+    }
+
+    button{
+      float:right;
+    }
+  }
+
+  .companies, .branches{
+    padding: 0px;
+  }
+
+  .branches{
+    #open-hours, #close-hours{
+        width: 200px;
+    }
+  }
+}
+
+.admin-sidebar{
+  padding: 0px;
+  a{
+    display:block;
+    width: 100%;
+    height: 65px;
+    padding: 20px;
+    text-decoration: none;
+    color:black;
+    font-size: 18px;
+
+    &.active, &:hover{
+      color:white;
+      background-color:black;
+    }
+  }
+}
