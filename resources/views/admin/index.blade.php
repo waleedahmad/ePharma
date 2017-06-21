@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    <title>Admin - ePharm</title>
+    <title>Admin - ePharma</title>
 @endsection
 
 @section('content')

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-default">
-    <div class="container">
+    <div class="@if(Auth::check()) @if(Auth::user()->type === 'user') container @else container-fluid @endif @else container @endif">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -13,6 +13,13 @@
 
         <ul class="nav navbar-nav navbar-right">
             @if(Auth::check())
+
+                @if(Auth::user()->type === 'user')
+                    <li>
+                        <a href="/checkout"> <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"> </span> Checkout</a>
+                    </li>
+                @endif
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{Auth::user()->name}} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -28,5 +35,17 @@
                 </li>
             @endif
         </ul>
+
+        @if(Auth::check())
+            @if(Auth::user()->type === 'user')
+                <form class="navbar-form navbar-right" method="GET" action="/search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search Medicines" name="medicine">
+                    </div>
+                </form>
+            @endif
+        @endif
+
+
     </div>
 </nav>

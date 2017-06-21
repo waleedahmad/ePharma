@@ -15,4 +15,8 @@ class Branch extends Model
     public function manager(){
         return $this->hasOne('App\User', 'id', 'manager_id');
     }
+
+    public function loc(){
+        return $this->hasOne('App\Town', 'id', 'location');
+    }
 }

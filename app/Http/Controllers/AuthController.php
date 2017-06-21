@@ -52,7 +52,7 @@ class AuthController extends Controller
             $user->address = $request->address;
             $user->verified = 0;
             $user->verification_token = str_random(10);
-            $user->type = 'User';
+            $user->type = 'user';
             if ($user->save()) {
                 $request->session()->flash('message', 'Successfully registered, please confirm email');
                 Mail::to($user)->send(new VerifyUser($user));

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-@import "../../../public/libs/bootstrap/dist/css/bootstrap.min.css";
 
 *{
   font-family: 'Source Sans Pro', sans-serif;
@@ -50,3 +49,4 @@ body{
 @import "auth";
 @import "admin";
 @import "jttimepicker";
+@import "user";

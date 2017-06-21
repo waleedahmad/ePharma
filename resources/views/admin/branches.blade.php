@@ -34,6 +34,14 @@
                             </th>
 
                             <th>
+                                City
+                            </th>
+
+                            <th>
+                                Town
+                            </th>
+
+                            <th>
                                 Address
                             </th>
 
@@ -68,6 +76,14 @@
 
                                 <td>
                                     {{$branch->manager->name}}
+                                </td>
+
+                                <td>
+                                    {{$branch->loc->city->name}}
+                                </td>
+
+                                <td>
+                                    {{$branch->loc->name}}
                                 </td>
 
                                 <td>

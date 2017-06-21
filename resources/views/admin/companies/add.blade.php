@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    <title>Add Company - ePharm</title>
+    <title>Add Company - ePharma</title>
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                 <form method="post" action="/admin/company">
                     <div class="form-group @if($errors->has('name')) has-error @endif">
                         <label>Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="Name">
+                        <input type="text" class="form-control" name="name" placeholder="Name" value="{{old('name')}}">
                         @if($errors->has('name'))
                             {{$errors->first('name')}}
                         @endif
@@ -31,7 +31,7 @@
 
                     <div class="form-group @if($errors->has('email')) has-error @endif">
                         <label>Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="Email">
+                        <input type="email" class="form-control" name="email" placeholder="Email" value="{{old('email')}}">
                         @if($errors->has('email'))
                             {{$errors->first('email')}}
                         @endif
@@ -39,7 +39,7 @@
 
                     <div class="form-group @if($errors->has('phone')) has-error @endif">
                         <label>Phone</label>
-                        <input type="phone" class="form-control" name="phone" placeholder="Phone No.">
+                        <input type="phone" class="form-control" name="phone" placeholder="Phone No." value="{{old('phone')}}">
                         @if($errors->has('phone'))
                             {{$errors->first('phone')}}
                         @endif
@@ -47,7 +47,7 @@
 
                     <div class="form-group @if($errors->has('address')) has-error @endif">
                         <label>Address</label>
-                        <input type="text" class="form-control" name="address" placeholder="Address">
+                        <input type="text" class="form-control" name="address" placeholder="Address" value="{{old('address')}}">
                         @if($errors->has('address'))
                             {{$errors->first('address')}}
                         @endif

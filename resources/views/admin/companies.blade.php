@@ -22,7 +22,7 @@
             <div class="companies">
                 @if($companies->count())
 
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>

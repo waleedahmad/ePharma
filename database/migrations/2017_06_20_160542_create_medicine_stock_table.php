@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMedicineDetailsTable extends Migration
+class CreateMedicineStockTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreateMedicineDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('medicine_details', function (Blueprint $table) {
+        Schema::create('medicine_stock', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('medicine_id')->unsigned();
+            $table->integer('quantity');
             $table->string('category');
             $table->date('expiry');
             $table->date('mfg_date');
             $table->double('price');
+            $table->string('potency');
+            $table->string('type');
             $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->timestamps();
         });
@@ -32,6 +35,6 @@ class CreateMedicineDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medicine_details');
+        Schema::dropIfExists('medicine_stock');
     }
 }

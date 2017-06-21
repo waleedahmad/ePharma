@@ -105,6 +105,9 @@ return [
         ],
     ],
 
+    'duplicate_med' =>  'The :attribute already exist in branch.',
+    'duplicate_med_update' =>  'The :attribute already exist in branch.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Branch;
+use App\City;
 use App\Company;
+use App\Town;
 use App\User;
 use Illuminate\View\Compilers\Concerns\CompilesAuthorizations;
 use Validator;
@@ -29,7 +31,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5',
             'email' => 'required|email',
-            'phone' => 'required|min:11',
+            'phone' => 'required|numeric|min:11',
             'address' => 'required',
         ]);
 
@@ -44,15 +46,15 @@ class AdminController extends Controller
                 return redirect('/admin/companies');
             }
         }else{
-            return redirect('/admin/company/add')->withErrors($validator);
+            return redirect('/admin/company/add')->withErrors($validator)->withInput();
         }
     }
 
     public function updateCompany(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:5',
+            'name' => 'required|min:5|unique:companies,name,'.$request->id,
             'email' => 'required|email',
-            'phone' => 'required|min:11',
+            'phone' => 'required|numeric|min:11',
             'address' => 'required',
         ]);
 
@@ -68,7 +70,7 @@ class AdminController extends Controller
                 return redirect('/admin/companies');
             }
         }else{
-            return redirect('/admin/company/add')->withErrors($validator);
+            return redirect('/admin/company/edit/'.$request->id)->withErrors($validator)->withInput();
         }
     }
 
@@ -88,7 +90,8 @@ class AdminController extends Controller
 
     public function getAddBranch(){
         $companies = Company::all();
-        return view('admin.branches.add')->with('companies', $companies);
+        $cities = City::all();
+        return view('admin.branches.add')->with('companies', $companies)->with('cities', $cities);
     }
 
     public function addBranch(Request $request){
@@ -97,7 +100,9 @@ class AdminController extends Controller
             'email' =>  'required|email|unique:users,email',
             'password'  =>  'required|min:6',
             'name' => 'required|min:5',
-            'phone' => 'required|min:11',
+            'phone' => 'required|numeric|min:11',
+            'city'  =>  'required',
+            'town'  =>  'required',
             'address' => 'required',
             'open_hours'    =>  'required',
             'close_hours'   =>  'required'
@@ -123,6 +128,7 @@ class AdminController extends Controller
                 $branch->phone = $request->phone;
                 $branch->open_hours = $request->open_hours;
                 $branch->close_hours = $request->close_hours;
+                $branch->location = $this->getLocationId($request->city, $request->town);
 
                 if($branch->save()){
                     return redirect('/admin/branches');
@@ -134,13 +140,64 @@ class AdminController extends Controller
         }
     }
 
-    public function getEditBranch(){
-        return view('admin.branches.edit');
+    private function getLocationId($city, $town)
+    {
+        $location = Town::where('city_id','=', $city)->where('name', 'like', $town);
+        if($location->count()){
+            return $location->first()->id;
+        }else{
+            $location = new Town();
+            $location->city_id = $city;
+            $location->name = $town;
+            if($location->save()){
+                return $location->id;
+            }
+        }
+    }
+
+    public function getEditBranch($id){
+        $branch = Branch::where('id','=', $id)->first();
+        $companies = Company::all();
+        $cities = City::all();
+        return view('admin.branches.edit')->with('branch', $branch)->with('companies', $companies)->with('cities', $cities);
     }
 
 
-    public function updateBranch(){
+    public function updateBranch(Request $request){
+        $branch = Branch::find($request->branch_id);
+        $validator = Validator::make($request->all(), [
+            'company'   =>  'required',
+            'email' =>  'required|email|unique:users,email,'.$branch->manager->id,
+            'name' => 'required|min:5',
+            'phone' => 'required|numeric|min:11',
+            'city'  =>  'required',
+            'town'  =>  'required',
+            'address' => 'required',
+            'open_hours'    =>  'required',
+            'close_hours'   =>  'required'
+        ]);
 
+        if($validator->passes()){
+            $user = User::find($branch->manager_id);
+            $user->email = $request->email;
+            $user->name = $request->name;
+            $user->contact = $request->phone;
+
+            if($user->save()){
+                $branch->company_id = $request->company;
+                $branch->address = $request->address;
+                $branch->phone = $request->phone;
+                $branch->open_hours = $request->open_hours;
+                $branch->close_hours = $request->close_hours;
+                $branch->location = $this->getLocationId($request->city, $request->town);
+
+                if($branch->save()){
+                    return redirect('/admin/branches');
+                }
+            }
+        }else{
+            return redirect('/admin/branch/edit/'.$branch->id)->withErrors($validator)->withInput();
+        }
     }
 
     public function deleteBranch(Request $request){
