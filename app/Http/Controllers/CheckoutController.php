@@ -98,6 +98,8 @@ class CheckoutController extends Controller
                         $order_item->price = $item->stock->price;
                         $order_item->potency = $item->stock->potency;
                         $order_item->type = $item->stock->type;
+                        $item->stock->quantity -= $item->quantity;
+                        $item->stock->save();
                         $order_item->save();
 
                         $receipt_items->receipt_id = $receipt->id;
