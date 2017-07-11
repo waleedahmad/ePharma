@@ -104,3 +104,50 @@ $('#open-hours, #close-hours').timepicker({
 $('#mfg-date , #expiry-date').datepicker({
     dateFormat: 'yy-mm-dd'
 });
+
+$('.rm-cart-item').on('click', function(e){
+    e.preventDefault();
+    let id = $(this).attr('data-id');
+
+
+    bootbox.confirm("Are you sure you want to remove this item from cart?", function(result){
+        if(result){
+            $.ajax({
+                type : 'DELETE',
+                url : 'cart',
+                data : {
+                    id : id,
+                    _token : getCSRFToken()
+                },
+                success : function(removed){
+                    if(removed){
+                        $(this).parents('.cart-item').slideUp().remove();
+                        if(!$('.cart-item').length){
+                            $('.cart-checkout').hide();
+                        }
+                    }
+                }.bind(this)
+            })
+        }
+    }.bind(this));
+});
+
+$('.confirm-checkout').on('click', function(e){
+    e.preventDefault();
+
+    bootbox.confirm("Are you sure you want to remove this item from cart?", function(result){
+        if(result){
+            window.location = $(this).attr('href');
+        }
+    }.bind(this));
+});
+
+$('.clear-order').on('click', function(e){
+    e.preventDefault();
+
+    bootbox.confirm("Are you sure you want to clear this order?", function(result){
+        if(result){
+            window.location = $(this).attr('href');
+        }
+    }.bind(this));
+});

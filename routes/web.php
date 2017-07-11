@@ -39,12 +39,22 @@ Route::group(['middleware' =>	['auth']], function(){
         Route::post('/branch/stock/update', 'BranchController@updateStock');
         Route::post('/branch/stock', 'BranchController@addStock');
         Route::delete('/branch/stock', 'BranchController@deleteStock');
+        Route::get('/branch/orders', 'BranchController@branchOrders');
+        Route::get('/branch/order/{id}', 'BranchController@viewOrder');
+        Route::get('/branch/order/{id}/clear', 'BranchController@clearOrders');
     });
 
     Route::group(['middleware'  =>  ['user']], function(){
         Route::get('/search', 'UserController@search');
         Route::get('/checkout', 'UserController@checkout');
         Route::get('/medicine/{id}', 'UserController@showMedicine');
+
+        Route::post('/cart', 'CheckoutController@addItemToCart');
+        Route::delete('/cart', 'CheckoutController@removeItemFromCart');
+        Route::get('/cart/process', 'CheckoutController@processCheckout');
+        Route::get('/receipts', 'UserController@showReceipts');
+        Route::get('/receipt/{id}','UserController@getReceipt');
+
     });
 
 

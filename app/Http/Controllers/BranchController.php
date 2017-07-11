@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\Stock;
 use Validator;
 use App\Branch;
@@ -222,5 +223,22 @@ class BranchController extends Controller
         return response()->json(false);
     }
 
+    public function branchOrders(){
+        $orders = Order::where('branch_id', '=', Auth::user()->branch->id)->orderBy('created_at', 'DESC')->get();
+        return view('branch.orders')->with('orders', $orders);
+    }
 
+    public function viewOrder($id){
+        $order = Order::find($id);
+        return view('branch.order')->with('order', $order);
+    }
+
+    public function clearOrders($id, Request $request){
+        $order = Order::find($id);
+        $order->cleared = true;
+        if($order->save()){
+            $request->session()->flash('message', 'Order successfully cleared');
+            return redirect('/branch/order/'.$order->id);
+        }
+    }
 }

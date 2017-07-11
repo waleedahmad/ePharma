@@ -79,7 +79,49 @@
                     </td>
                 </tr>
             </table>
-            <button class="btn btn-default pull-right add-cart" id="{{$stock->id}}">Add to Cart</button>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="/cart" method="POST">
+                        <div class="col-xs-3 details">
+                            <b>Price :</b> Rs. {{$stock->price}}
+                        </div>
+
+                        <div class="col-xs-3 details">
+                            <b>Items in Stock :</b> {{$stock->quantity}}
+                        </div>
+
+                        <div class="col-xs-3">
+                            <div class="col-xs-4 details">
+                                <b>
+                                    Quantity :
+                                </b>
+                            </div>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" placeholder="Required Quantity" name="quantity">
+                            </div>
+                        </div>
+
+                        {{csrf_field()}}
+
+                        <input type="hidden" name="medicine_id" value="{{$stock->id}}">
+
+                        <div class="col-xs-3">
+                            <button class="btn btn-default pull-right" id="{{$stock->id}}">Add to Cart</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
         </div>
     </div>
 @endsection

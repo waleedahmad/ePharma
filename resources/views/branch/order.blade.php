@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    <title>Medicine Stock - ePharma</title>
+    <title>Orders # {{$order->id}} - ePharma</title>
 @endsection
 
 @section('content')
@@ -11,18 +11,24 @@
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-10">
             <div class="page-header">
                 <h3>
-                    Medicines Stock
+                    Orders # {{$order->id}}
                 </h3>
 
-                <a href="/branch/stock/add">
-                    <button class="btn btn-default">Add Stock</button>
+                <a href="/branch/orders">
+                    <button class="btn btn-default">Back to Orders</button>
                 </a>
             </div>
 
-            <div class="stock">
-                @if($stock->count())
+            @if(Session::has('message'))
+                <div class="alert alert-success">
+                    {{Session::get('message')}}
+                </div>
+            @endif
 
-                    <table class="table table-striped">
+            <div class="orders">
+                @if($order->items->count())
+
+                    <table class="table table">
                         <thead>
                         <tr>
                             <th>
@@ -30,7 +36,7 @@
                             </th>
 
                             <th>
-                                Quantity
+                                Order Quantity
                             </th>
 
                             <th>
@@ -48,27 +54,14 @@
                             <th>
                                 Type
                             </th>
-
-
-                            <th>
-                                Mfg Date
-                            </th>
-
-                            <th>
-                                Expiry Date
-                            </th>
-
-                            <th>
-                                Actions
-                            </th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        @foreach($stock as $item)
-                            <tr class="item">
+                        @foreach($order->items as $item)
+                            <tr class="order">
                                 <td>
-                                    {{$item->medicine->name}}
+                                    {{$item->medicine_name}}
                                 </td>
 
                                 <td>
@@ -84,33 +77,41 @@
                                 </td>
 
                                 <td>
-                                    {{$item->potency}}
+                                    {{$item->potency}} mg
                                 </td>
 
                                 <td>
                                     {{$item->type}}
-                                </td>
-
-                                <td>
-                                    {{$item->mfg_date}}
-                                </td>
-
-                                <td>
-                                    {{$item->expiry}}
-                                </td>
-
-                                <td>
-                                    <a href="/branch/stock/edit/{{$item->id}}" class="btn btn-link">Edit</a>
-                                    <a href="" class="btn btn-link delete-stock" data-id="{{$item->id}}">Delete</a>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                 @else
-                    No stock available.
+                    No items in this order.
                 @endif
+            </div>
+
+            @if($order->items->count())
+                <div class="order-details">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                            <div class="col-xs-6 details">
+                                <b>Total Rs.  : </b> {{$order->total()}}
+                            </div>
+
+                            @if(!$order->cleared)
+                                <div class="col-xs-6">
+                                    <a href="/branch/order/{{$order->id}}/clear" class="clear-order">
+                                        <button class="btn btn-default pull-right">Clear Order</button>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
-    </div>
     </div>
 @endsection
