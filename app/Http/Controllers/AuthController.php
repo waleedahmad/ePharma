@@ -203,7 +203,7 @@ class AuthController extends Controller
         return ResetPassword::where('email',$email)->where('token', $token)->count();
     }
 
-    public function getResetForm(Request $request, $token, $email){
+    public function getResetForm(Request $request, $email, $token){
         if($this->validResetPasswordRequest($token, $email)){
             return view('auth.reset_password')->with('token', $token)->with('email', $email);
         }else{
@@ -227,14 +227,11 @@ class AuthController extends Controller
 			$token = $request->token;
 			$password = $request->password;
 			$reset = ResetPassword::where('email', '=', $email)->where('token', '=', $token);
-            $user = $this->getUser($email);
-            
-            if($user->update([
-                    'password'  =>  bcrypt($password)
-            ])&& $reset->delete())
-            {
-				$request->session()->flash('message', 'Password Successfully changed.');
-				return redirect('/login');
+            $user = User::where('email','=', $email)->first();
+            $user->password = bcrypt($password);
+            if($user->save() && $reset->delete()){
+                $request->session()->flash('message', 'Password Successfully changed.');
+                return redirect('/login');
             }
         }else{
                 $request->session()->flash('message','Password not changed.');
