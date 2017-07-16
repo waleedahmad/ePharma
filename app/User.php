@@ -30,4 +30,8 @@ class User extends Authenticatable
     public function branch(){
         return $this->hasOne('App\Branch', 'manager_id', 'id');
     }
+
+    public function info(){
+        return $this->hasOne('App\UserInfo', 'user_id', 'id');
+    }
 }

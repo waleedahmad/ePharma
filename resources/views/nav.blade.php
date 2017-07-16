@@ -27,6 +27,10 @@
                             <li>
                                 <a href="/receipts">Receipts</a>
                             </li>
+
+                            <li>
+                                <a href="/user/info">Settings</a>
+                            </li>
                         @endif
                         <li>
                             <a href="/logout">Logout</a>

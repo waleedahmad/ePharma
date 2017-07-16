@@ -20,7 +20,7 @@
             </div>
 
             <div class="companies col-xs-5">
-                <form method="post" action="/branch/stock/update">
+                <form method="post" action="/branch/stock/update" enctype="multipart/form-data">
 
                     <div class="form-group @if($errors->has('category')) has-error @endif">
                         <label>Category</label>
@@ -98,6 +98,15 @@
                                id="expiry-date" value="{{old('expiry_date') ? old('expire_date') : $stock->expiry}}">
                         @if($errors->has('expiry_date'))
                             {{$errors->first('expiry_date')}}
+                        @endif
+                    </div>
+
+                    <div class="form-group @if($errors->has('stock_photo')) has-error @endif">
+                        <label>Photo (Optional)</label>
+                        <input type="file" name="stock_photo">
+                        <p class="help-block">Product stock photo</p>
+                        @if($errors->has('stock_photo'))
+                            {{$errors->first('stock_photo')}}
                         @endif
                     </div>
 

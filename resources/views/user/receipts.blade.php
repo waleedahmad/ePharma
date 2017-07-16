@@ -13,59 +13,63 @@
         </div>
 
         <div class="receipts">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>
-                        Receipt ID #
-                    </th>
+            @if($receipts->count())
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            Receipt ID #
+                        </th>
 
-                    <th>
-                        Ordered Items
-                    </th>
+                        <th>
+                            Ordered Items
+                        </th>
 
-                    <th>
-                        Total
-                    </th>
+                        <th>
+                            Total
+                        </th>
 
-                    <th>
-                        Receipt Date
-                    </th>
+                        <th>
+                            Receipt Date
+                        </th>
 
-                    <th>
-                        Action
-                    </th>
-                </tr>
-                </thead>
-
-                <tbody>
-                @foreach($receipts as $receipt)
-                    <tr class="receipt">
-                        <td>
-                            {{$receipt->id}}
-                        </td>
-
-                        <td>
-                            {{$receipt->transactions->count()}}
-                        </td>
-
-                        <td>
-                            Rs. {{$receipt->total()}}
-                        </td>
-
-                        <td>
-                            {{$receipt->created_at}}
-                        </td>
-
-                        <td>
-                            <a href="/receipt/{{$receipt->id}}">
-                                View
-                            </a>
-                        </td>
+                        <th>
+                            Action
+                        </th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                    @foreach($receipts as $receipt)
+                        <tr class="receipt">
+                            <td>
+                                {{$receipt->id}}
+                            </td>
+
+                            <td>
+                                {{$receipt->transactions->count()}}
+                            </td>
+
+                            <td>
+                                Rs. {{$receipt->total()}}
+                            </td>
+
+                            <td>
+                                {{$receipt->created_at}}
+                            </td>
+
+                            <td>
+                                <a href="/receipt/{{$receipt->id}}">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            @else
+                You currently have no orders.
+            @endif
 
         </div>
     </div>

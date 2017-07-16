@@ -18,6 +18,12 @@
             </div>
         @endif
 
+        @if(!Auth::user()->info)
+            <div class="alert alert-success">
+                Please fill in <a href="/user/info" class="alert-link">Contact Details</a> to use checkout feature.
+            </div>
+        @endif
+
         <div class="cart">
             @if($items->count())
 

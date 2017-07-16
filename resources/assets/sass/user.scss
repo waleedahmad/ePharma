@@ -2,6 +2,18 @@
   .table{
     margin-top: 30px;
   }
+
+  .image-holder{
+    width: 200px;
+    height: 200px;
+    overflow:hidden;
+    margin: 40px auto;
+    border: 2px solid #e7e7e7;
+
+    img{
+      width: 100%;
+    }
+  }
 }
 
 .stock-item, .cart-checkout{
@@ -14,3 +26,56 @@
     font-size: 16px;
   }
 }
+
+.stock-item{
+  .image-holder{
+    width: 200px;
+    height: 200px;
+    overflow:hidden;
+    margin: 10px auto;
+    border: 2px solid #e7e7e7;
+
+    img{
+      width: 100%;
+    }
+  }
+}
+
+.products{
+  .user-sidebar{
+    padding: 0px;
+    a{
+      display:block;
+      width: 100%;
+      height: 35px;
+      padding: 5px;
+      text-decoration: none;
+      color:black;
+      font-size: 16px;
+
+      &.active, &:hover{
+        color:white;
+        background-color:black;
+      }
+    }
+  }
+
+  .featured{
+    .product{
+      .thumbnail{
+        height: 370px;
+      }
+      display:block;
+      .image-holder{
+        width: 200px;
+        height: 200px;
+        overflow:hidden;
+
+        img{
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+

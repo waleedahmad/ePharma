@@ -113,12 +113,9 @@ class AdminController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
-            $user->contact = $request->phone;
-            $user->CNIC = '';
             $user->verified = 1;
             $user->verification_token = '';
             $user->type = 'b_admin';
-            $user->address = $request->address;
 
             if($user->save()){
                 $branch = new Branch();
@@ -181,7 +178,6 @@ class AdminController extends Controller
             $user = User::find($branch->manager_id);
             $user->email = $request->email;
             $user->name = $request->name;
-            $user->contact = $request->phone;
 
             if($user->save()){
                 $branch->company_id = $request->company;

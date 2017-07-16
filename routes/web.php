@@ -45,9 +45,8 @@ Route::group(['middleware' =>	['auth']], function(){
     });
 
     Route::group(['middleware'  =>  ['user']], function(){
-        Route::get('/search', 'UserController@search');
         Route::get('/checkout', 'UserController@checkout');
-        Route::get('/medicine/{id}', 'UserController@showMedicine');
+        Route::get('/category/{category}', 'AppController@getCategorizedMedicines');
 
         Route::post('/cart', 'CheckoutController@addItemToCart');
         Route::delete('/cart', 'CheckoutController@removeItemFromCart');
@@ -55,12 +54,18 @@ Route::group(['middleware' =>	['auth']], function(){
         Route::get('/receipts', 'UserController@showReceipts');
         Route::get('/receipt/{id}','UserController@getReceipt');
 
-    });
+        Route::get('/user/info', 'UserController@getUserInfo');
+        Route::post('/user/info', 'UserController@saveUserInfo');
+        Route::post('/user/info/update', 'UserController@updateUserInfo');
+        Route::get('/user/info/towns', 'UserController@getTowns');
 
+    });
 
     Route::get('/logout','AuthController@logout');
 });
 
+Route::get('/search', 'UserController@search');
+Route::get('/medicine/{id}', 'UserController@showMedicine');
 
 Route::group(['middleware'	=>	['guest']], function(){
     Route::get('/register', 'AuthController@getRegister');

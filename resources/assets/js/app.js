@@ -135,7 +135,7 @@ $('.rm-cart-item').on('click', function(e){
 $('.confirm-checkout').on('click', function(e){
     e.preventDefault();
 
-    bootbox.confirm("Are you sure you want to remove this item from cart?", function(result){
+    bootbox.confirm("Are you sure you want to process checkout?", function(result){
         if(result){
             window.location = $(this).attr('href');
         }
@@ -151,3 +151,54 @@ $('.clear-order').on('click', function(e){
         }
     }.bind(this));
 });
+
+$('#user-info-city').on('change', function(e){
+    let id = $(this).val();
+
+    if(id.length){
+        $.ajax({
+            type : 'GET',
+            url : '/user/info/towns',
+            data : {
+                city_id : id
+            },
+            success : function(res){
+                if(res.length){
+                    renderLocations(res);
+                }else{
+                    bootbox.alert("We currently have no stores listings in selected city");
+                    clearLocations();
+                }
+            }
+        })
+    }
+});
+
+function renderLocations(locations){
+    let $locations = $('#user-info-town');
+
+    $($locations).empty().append($('<option>', {
+        value: '',
+        text : 'Select Town'
+    }));
+
+    locations.forEach(function(loc){
+        $($locations).append($('<option>', {
+            value: loc.id,
+            text : loc.name
+        }));
+    });
+}
+
+function clearLocations(){
+    let $locations = $('#user-info-town');
+    $($locations).empty().append($('<option>', {
+        value: '',
+        text : 'Select Town'
+    }));
+}
+
+$('#user-info-town').on('change', function(e){
+
+});
+

@@ -65,6 +65,10 @@ class CheckoutController extends Controller
     }
 
     public function processCheckout(Request $request){
+        if(!Auth::user()->info){
+            $request->session()->flash('message', 'Please add contact information before checking out');
+            return redirect('/user/info');
+        }
 
         $items = Cart::where('user_id', '=', Auth::user()->id);
         $orders = [];

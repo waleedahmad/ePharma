@@ -30,6 +30,6 @@ class VerifyUser extends Mailable
      */
     public function build()
     {
-        return $this->view('email.verify');
+        return $this->from('circlesappacc@gmail.com', 'ePharma')->subject('Account verification')->view('email.verify');
     }
 }

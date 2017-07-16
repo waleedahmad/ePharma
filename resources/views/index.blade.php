@@ -14,6 +14,12 @@
             Find cheapest medicine in your area
         </div>
 
+        <div class="search">
+            <form method="GET" action="/search">
+                <input type="text" class="form-control" placeholder="Search Medicines" name="medicine">
+            </form>
+        </div>
+
         <div class="actions">
             <a href="/register">
                 <button class="btn btn-default">

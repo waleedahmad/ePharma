@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Stock;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 use App\Branch;
 use App\Medicine;
@@ -86,7 +87,8 @@ class BranchController extends Controller
     }
 
     public function addStock(Request $request){
-        $validator = Validator::make($request->all(), [
+
+        $rules = [
             'medicine'  =>  'required',
             'category'  =>  'required',
             'type'  =>  'required',
@@ -95,7 +97,13 @@ class BranchController extends Controller
             'potency'   =>  'required|numeric|integer|min:1',
             'mfg_date'  =>  'required',
             'expiry_date'  =>  'required',
-        ]);
+        ];
+
+        if($request->hasFile('stock_photo')){
+            $rules['stock_photo'] = 'required|file|image';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         if($validator->passes()){
 
@@ -119,6 +127,7 @@ class BranchController extends Controller
                 $stock->price = $price;
                 $stock->potency = $potency;
                 $stock->type = $type;
+                $stock->image_uri = ($request->hasFile('stock_photo')) ? $this->uploadStockPhotoAndGetUri($request->file('stock_photo')) : '/img/no_image_available.jpeg';
 
                 if($stock->save()){
                     return redirect('/branch/stock');
@@ -133,6 +142,7 @@ class BranchController extends Controller
                 $stock->price = $price;
                 $stock->potency = $potency;
                 $stock->type = $type;
+                $stock->image_uri = ($request->hasFile('stock_photo')) ? $this->uploadStockPhotoAndGetUri($request->file('stock_photo')) : '/img/no_image_available.jpeg';
 
                 if($stock->save()){
                     return redirect('/branch/stock');
@@ -142,6 +152,13 @@ class BranchController extends Controller
         }else{
             return redirect('/branch/stock/add')->withErrors($validator)->withInput();
         }
+    }
+
+    private function uploadStockPhotoAndGetUri($file){
+        $path = Storage::disk('public')->putFileAs(
+            'stock', $file, str_random(10).'.'.$file->getClientOriginalExtension()
+        );
+        return $path;
     }
 
     public function stockExist($id, $category, $type, $potency){
@@ -156,7 +173,7 @@ class BranchController extends Controller
     }
 
     public function updateStock(Request $request){
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'medicine'  =>  'required',
             'category'  =>  'required',
             'type'  =>  'required',
@@ -165,7 +182,13 @@ class BranchController extends Controller
             'potency'   =>  'required|numeric|integer|min:1',
             'mfg_date'  =>  'required',
             'expiry_date'  =>  'required',
-        ]);
+        ];
+
+        if($request->hasFile('stock_photo')){
+            $rules['stock_photo'] = 'required|file|image';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         $medicine_id = $request->medicine;
         $quantity = $request->quantity;
@@ -185,6 +208,7 @@ class BranchController extends Controller
             $stock->price = $price;
             $stock->potency = $potency;
             $stock->type = $type;
+            $stock->image_uri = ($request->hasFile('stock_photo')) ? $this->updateStockPhotoAndGetURI($request->file('stock_photo'), $stock->image_uri) : $stock->image_uri;
 
             if($this->stockExist($medicine_id, $category, $type, $potency)){
                 if($this->getStockId($medicine_id, $category, $type, $potency) == $request->id){
@@ -206,15 +230,37 @@ class BranchController extends Controller
         }
     }
 
+    private function updateStockPhotoAndGetURI($file, $old_uri){
+        if(!$this->hasDefaultStockImage($old_uri)){
+            $this->deleteStockImage($old_uri);
+        }
+
+        $path = Storage::disk('public')->putFileAs(
+            'stock', $file, str_random(10).'.'.$file->getClientOriginalExtension()
+        );
+        return $path;
+    }
+
+    private function hasDefaultStockImage($uri){
+        return $uri === '/img/no_image_available.jpeg';
+    }
+
+    private function deleteStockImage($uri){
+        return Storage::disk('public')->delete($uri);
+    }
+
     public function getStockId($id, $category, $type, $potency){
         return Stock::where('medicine_id', $id)->where('category', '=', $category)
             ->where('type','=', $type)->where('potency', '=', $potency)->first()->id;
     }
 
 
-
     public function deleteStock(Request $request){
         $stock = Stock::find($request->id);
+
+        if(!$this->hasDefaultStockImage($stock->image_uri)){
+            $this->deleteStockImage($stock->image_uri);
+        }
 
         if($stock->delete()){
             return response()->json(true);

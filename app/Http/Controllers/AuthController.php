@@ -37,9 +37,6 @@ class AuthController extends Controller
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:4|',
-            'phone' => 'required',
-            'cnic' => 'required|unique:users,CNIC|min:15|max:15',
-            'address' => 'required'
         ]);
         if ($validator->passes()) {
 
@@ -47,15 +44,12 @@ class AuthController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password =bcrypt($request->password);
-            $user->contact = $request->phone;
-            $user->CNIC = $request->cnic;
-            $user->address = $request->address;
             $user->verified = 0;
             $user->verification_token = str_random(10);
             $user->type = 'user';
             if ($user->save()) {
                 $request->session()->flash('message', 'Successfully registered, please confirm email');
-                Mail::to($user)->send(new VerifyUser($user));
+                Mail::to($user)->queue(new VerifyUser($user));
                 return redirect('/login');
             }
         }else{

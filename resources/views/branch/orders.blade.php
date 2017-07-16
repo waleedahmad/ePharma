@@ -63,7 +63,7 @@
                                 </td>
 
                                 <td>
-                                    {{$order->user->address}}
+                                    {{$order->user->info->address}}, {{$order->user->info->town->name}} {{$order->user->info->town->city->name}}
                                 </td>
 
                                 <td>

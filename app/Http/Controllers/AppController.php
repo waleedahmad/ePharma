@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Branch;
+use App\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,10 +26,16 @@ class AppController extends Controller
             }
 
             if(Auth::user()->type === 'user'){
-                return view('user.index');
+                $products = Stock::paginate(20);
+                return view('user.index')->with('products', $products);
             }
         }else{
             return view('index');
         }
+    }
+
+    public function getCategorizedMedicines($category){
+        $products = Stock::where('category', '=', $category)->paginate(20);
+        return view('user.index')->with('products', $products);
     }
 }
