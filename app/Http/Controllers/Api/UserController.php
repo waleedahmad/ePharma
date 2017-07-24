@@ -47,17 +47,13 @@ class UserController extends Controller
 
     public function showReceipts(){
         $receipts = Receipt::with('transactions')->where('user_id','=', Auth::user()->id)->get();
-        return response()->json([
-            $receipts
-        ], 200);
+        return response()->json($receipts, 200);
     }
 
     public function getReceipt(Request $request){
         $receipt = Receipt::with('transactions')->find($request->id);
         if($receipt){
-            return response()->json([
-                $receipt
-            ], 200);
+            return response()->json($receipt, 200);
         }
         return response()->json([
             'error' =>  'Invalid receipt ID'
