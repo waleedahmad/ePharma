@@ -20,7 +20,7 @@ class CreateUserInfoTable extends Migration
             $table->string('cnic');
             $table->string('address');
             $table->string('phone_no');
-            $table->foreign('location')->references('id')->on('towns');
+            $table->foreign('location')->references('id')->on('towns')->onDelete('cascade');
             $table->timestamps();
         });
     }

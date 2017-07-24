@@ -38,12 +38,14 @@
                     </ul>
                 </li>
             @else
-                <li>
-                    <a href="/register">Register</a>
-                </li>
-                <li>
-                    <a href="/login">Login</a>
-                </li>
+                @if(Request::path() != '/')
+                    <li>
+                        <a href="/register">Register</a>
+                    </li>
+                    <li>
+                        <a href="/login">Login</a>
+                    </li>
+                @endif
             @endif
         </ul>
 

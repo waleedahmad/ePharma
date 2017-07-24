@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('contact');
             $table->string('CNIC');
             $table->string('verified');
-            $table->string('verification_token');
+            $table->string('verification_token')->nullable();
             $table->string('type');
             $table->string('address');
             $table->rememberToken();

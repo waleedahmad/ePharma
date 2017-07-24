@@ -15,7 +15,7 @@ class AddLocationToBranches extends Migration
     {
         Schema::table('branches', function (Blueprint $table) {
             $table->integer('location')->unsigned();
-            $table->foreign('location')->references('id')->on('towns');
+            $table->foreign('location')->references('id')->on('towns')->on('users')->onDelete('cascade');;
         });
     }
 

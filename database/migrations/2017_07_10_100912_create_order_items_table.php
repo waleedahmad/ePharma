@@ -22,7 +22,7 @@ class CreateOrderItemsTable extends Migration
             $table->double('price');
             $table->string('potency');
             $table->string('type');
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');;
             $table->timestamps();
         });
     }

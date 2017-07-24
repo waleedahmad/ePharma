@@ -22,7 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->double('price');
             $table->string('potency');
             $table->string('type');
-            $table->foreign('receipt_id')->references('id')->on('receipts');
+            $table->foreign('receipt_id')->references('id')->on('receipts')->onDelete('cascade');;
             $table->timestamps();
         });
     }

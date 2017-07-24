@@ -18,8 +18,8 @@ class CreateCartTable extends Migration
             $table->integer('stock_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('quantity');
-            $table->foreign('stock_id')->references('id')->on('medicine_stock');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('stock_id')->references('id')->on('medicine_stock')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
