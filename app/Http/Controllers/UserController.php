@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cart;
 use App\City;
 use App\Medicine;
+use App\Order;
 use App\Receipt;
 use App\Stock;
 use App\Town;
@@ -20,13 +21,18 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
 
-    public function getCategorizedMedicines(){
-
-    }
-
     public function search(Request $request){
         $query = $request->medicine;
-        $medicines = Medicine::where('name','LIKE', '%'.$query.'%')->get();
+
+        if(Auth::check()){
+            $medicines = Medicine::whereHas('branch', function($q) {
+                $q->where('location', '=', Auth::user()->info->location);
+            })->where('name','LIKE', '%'.$query.'%')->get();
+        }else{
+            $medicines = Medicine::where('name','LIKE', '%'.$query.'%')->get();
+
+        }
+
         return view('user.search')->with('medicines',$medicines)->with('query', $query);
     }
 
@@ -43,12 +49,18 @@ class UserController extends Controller
 
     public function showReceipts(){
         $receipts = Receipt::where('user_id','=', Auth::user()->id)->get();
-        return view('user.receipts')->with('receipts', $receipts);
+        $orders = Order::where('user_id','=', Auth::user()->id)->get();
+        return view('user.receipts')->with('receipts', $receipts)->with('orders', $orders);
     }
 
     public function getReceipt($id){
         $receipt = Receipt::find($id);
         return view('user.receipt')->with('receipt', $receipt);
+    }
+
+    public function getOrderItems($id){
+        $order = Order::find($id);
+        return view('user.order')->with('order', $order);
     }
 
     public function getCartTotal($items){

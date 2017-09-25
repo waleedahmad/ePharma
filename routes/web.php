@@ -53,6 +53,7 @@ Route::group(['middleware' =>	['auth']], function(){
         Route::get('/cart/process', 'CheckoutController@processCheckout');
         Route::get('/receipts', 'UserController@showReceipts');
         Route::get('/receipt/{id}','UserController@getReceipt');
+        Route::get('/order/{id}', 'UserController@getOrderItems');
 
         Route::get('/user/info', 'UserController@getUserInfo');
         Route::post('/user/info', 'UserController@saveUserInfo');

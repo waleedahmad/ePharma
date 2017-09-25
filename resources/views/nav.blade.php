@@ -25,7 +25,7 @@
                     <ul class="dropdown-menu">
                         @if(Auth::user()->type === 'user')
                             <li>
-                                <a href="/receipts">Receipts</a>
+                                <a href="/receipts">Order & Receipts</a>
                             </li>
 
                             <li>

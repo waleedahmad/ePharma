@@ -27,7 +27,9 @@ class UserController extends Controller
 
     public function search(Request $request){
         $query = $request->medicine;
-        $medicines = Medicine::where('name','LIKE', '%'.$query.'%')->with('stock')->get();
+        $medicines = Medicine::whereHas('branch', function($q) {
+            $q->where('location', '=', Auth::user()->info->location);
+        })->where('name','LIKE', '%'.$query.'%')->get();
         return response()->json($medicines, 200);
     }
 

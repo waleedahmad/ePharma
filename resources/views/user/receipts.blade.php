@@ -72,5 +72,79 @@
             @endif
 
         </div>
+
+        <div class="page-header">
+            <h3>
+                Orders
+            </h3>
+        </div>
+
+        <div class="orders">
+            @if($orders->count())
+
+                <table class="table table">
+                    <thead>
+                    <tr>
+                        <th>
+                            ID #
+                        </th>
+
+                        <th>
+                            Store Location
+                        </th>
+
+                        <th>
+                            Total Items
+                        </th>
+
+                        <th>
+                            Order Date
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach($orders as $order)
+                        <tr class="order">
+                            <td>
+                                {{$order->id}}
+                            </td>
+
+                            <td>
+                                {{$order->branch->company->name . ' - ' . $order->branch->address . ', ' . $order->branch->loc->name . ', '. $order->branch->loc->city->name}}
+                            </td>
+
+                            <td>
+                                {{$order->items->count()}}
+                            </td>
+
+                            <td>
+                                {{$order->created_at}}
+                            </td>
+
+                            <td>
+                                {{($order->cleared) ? 'Cleared' : 'Pending'}}
+                            </td>
+
+                            <td>
+                                <a href="/order/{{$order->id}}">View</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            @else
+                No orders available.
+            @endif
+        </div>
+
     </div>
 @endsection

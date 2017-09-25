@@ -63,7 +63,8 @@
 
                     @else
                         <div class="alert alert-info">
-                            No products found.
+                            No products available at stores near your current location.
+                            You can change your location <a href="/user/info" class="alert-link">here</a>.
                         </div>
                     @endif
                 </div>

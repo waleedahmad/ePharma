@@ -27,7 +27,9 @@ class AppController extends Controller
             }
 
             if(Auth::user()->type === 'user'){
-                $products = Stock::paginate(20);
+                $products = Stock::whereHas('medicine.branch', function($q) {
+                    $q->where('location', '=', Auth::user()->info ? Auth::user()->info->location : '');
+                })->get();
                 return view('user.index')->with('products', $products);
             }
         }else{
@@ -36,7 +38,9 @@ class AppController extends Controller
     }
 
     public function getCategorizedMedicines($category){
-        $products = Stock::where('category', '=', $category)->paginate(20);
+        $products = Stock::whereHas('medicine.branch', function($q) {
+            $q->where('location', '=', Auth::user()->info ? Auth::user()->info->location : '');
+        })->where('category', '=', $category)->paginate(20);
         return view('user.index')->with('products', $products);
     }
 }

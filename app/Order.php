@@ -16,6 +16,10 @@ class Order extends Model
         return $this->hasOne('App\User', 'id', 'user_id');
     }
 
+    public function branch(){
+        return $this->hasOne('App\Branch', 'id', 'branch_id');
+    }
+
     public function total(){
         $total = 0;
 
