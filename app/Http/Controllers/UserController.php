@@ -79,39 +79,16 @@ class UserController extends Controller
 
         return view(($info ? 'user.update_info' : 'user.add_info'))->with('info', $info)->with('cities', $cities)->with('towns', $towns);
     }
-
-    public function saveUserInfo(Request $request){
-        $validator = Validator::make($request->all(), [
-            'city'  =>  'required',
-            'town'  =>  'required',
-            'cnic'  =>  'required|numeric|min:15',
-            'phone' =>  'required|numeric|min:11',
-            'address'   =>  'required'
-        ]);
-
-        if($validator->passes()){
-            $info = new UserInfo();
-            $info->user_id = Auth::user()->id;
-            $info->location = $request->town;
-            $info->cnic = $request->cnic;
-            $info->phone_no = $request->phone;
-            $info->address = $request->address;
-
-            if($info->save()){
-                $request->session()->flash('message', 'Contact information updated');
-                return redirect('/');
-            }
-        }else{
-            return redirect('/user/info')->withErrors($validator)->withInput();
-        }
-    }
-
+    
     public function updateUserInfo(Request $request){
         $validator = Validator::make($request->all(), [
             'city'  =>  'required',
             'town'  =>  'required',
-            'cnic'  =>  'required|numeric|min:15',
-            'phone' =>  'required|numeric|min:11',
+            'cnic'  =>  [
+                'required',
+                'regex:/^[0-9+]{5}-[0-9+]{7}-[0-9]{1}$/',
+            ],
+            'phone' =>  'required|phone:PK',
             'address'   =>  'required'
         ]);
 

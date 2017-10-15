@@ -108,6 +108,7 @@ return [
     'duplicate_med' =>  'The :attribute already exist in branch.',
     'duplicate_med_update' =>  'The :attribute already exist in branch.',
     'stock_available'   =>  'Not enough stock available for this medicine',
+    'phone' => 'The :attribute field contains an invalid number.',
 
     /*
     |--------------------------------------------------------------------------

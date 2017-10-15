@@ -5,6 +5,7 @@ use App\Branch;
 use App\Mail\ResetPasswordMail;
 use App\Mail\VerifyUser;
 use App\ResetPassword;
+use App\Rules\CleanUserNames;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,11 @@ class AuthController extends Controller
     public function registerUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:4',
+            'name' => [
+                'required',
+                'min:4',
+                new CleanUserNames
+            ],
             'email' => 'required|email|unique:users',
             'password' => 'required|min:4|',
         ]);
