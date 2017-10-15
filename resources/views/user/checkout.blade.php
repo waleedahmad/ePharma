@@ -18,6 +18,34 @@
             </div>
         @endif
 
+        @if(Session::has('order_failed'))
+            <div class="alert alert-danger">
+                <div>
+                    <h4>
+                        <b>Checkout Failed</b>
+                    </h4>
+                </div>
+
+                <div>
+                    Following orders to stores didn't meet minimum order amount criteria.
+                </div>
+
+                <div>
+                    <ul>
+                        @foreach(Session::get('failed') as $store)
+                            <li>
+                                {{$store}}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div>
+                    <b>Minimum order : </b> {{env('MINIMUM_ORDER')}}
+                </div>
+            </div>
+        @endif
+
         @if(!Auth::user()->info)
             <div class="alert alert-success">
                 Please fill in <a href="/user/info" class="alert-link">Contact Details</a> to use checkout feature.

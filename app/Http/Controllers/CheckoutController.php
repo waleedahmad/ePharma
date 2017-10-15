@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Branch;
 use App\Order;
 use App\OrderItem;
 use App\Receipt;
@@ -76,9 +77,19 @@ class CheckoutController extends Controller
             foreach($items->get()->pluck('stock.medicine.branch.id')->unique()->toArray() as $b_id){
                 $orders['order_'.$b_id]['branch_id'] = $b_id;
                 $orders['order_'.$b_id]['items'] = [];
+                $orders['order_'.$b_id]['total'] = 0;
             }
             foreach($items->get() as $item){
                 array_push($orders['order_'.$item->stock->medicine->branch->id]['items'], $item);
+                $orders['order_'.$item->stock->medicine->branch->id]['total'] += $item->stock->price * $item->quantity;
+            }
+
+            $failed = $this->validateMinimumOrder($orders);
+            if(count($failed)){
+                return redirect('/checkout')->with([
+                    'failed' => $failed,
+                    'order_failed' => true
+                ]);
             }
 
             $receipt = new Receipt();
@@ -126,4 +137,22 @@ class CheckoutController extends Controller
             return redirect('/checkout');
         }
     }
+
+    private function validateMinimumOrder($orders){
+        $failed_branches = [];
+        foreach($orders as $order){
+            if($order['total'] < env('MINIMUM_ORDER')){
+                array_push($failed_branches, $this->getBranchInfo($order['branch_id']));
+            }
+        }
+
+        return $failed_branches;
+    }
+
+    private function getBranchInfo($id){
+        $branch = Branch::find($id);
+        return $branch->company->name . ' - '. $branch->address . ', ' . $branch->loc->name . ', ' . $branch->loc->city->name;
+    }
+
+
 }
