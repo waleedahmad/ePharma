@@ -79,7 +79,7 @@ class UserController extends Controller
 
         return view(($info ? 'user.update_info' : 'user.add_info'))->with('info', $info)->with('cities', $cities)->with('towns', $towns);
     }
-    
+
     public function updateUserInfo(Request $request){
         $validator = Validator::make($request->all(), [
             'city'  =>  'required',
@@ -88,7 +88,7 @@ class UserController extends Controller
                 'required',
                 'regex:/^[0-9+]{5}-[0-9+]{7}-[0-9]{1}$/',
             ],
-            'phone' =>  'required|phone:PK',
+            'phone' =>  'required|numeric|phone:PK',
             'address'   =>  'required'
         ]);
 
